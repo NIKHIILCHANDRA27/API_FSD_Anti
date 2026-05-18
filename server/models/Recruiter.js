@@ -9,10 +9,9 @@ const recruiterSchema = new mongoose.Schema({
   role: { type: String, default: 'recruiter' },
 }, { timestamps: true });
 
-recruiterSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
+recruiterSchema.pre('save', async function() {
+  if (!this.isModified('password')) return;
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
 recruiterSchema.methods.comparePassword = async function(candidatePassword) {
